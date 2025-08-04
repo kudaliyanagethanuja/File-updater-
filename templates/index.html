@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📁 Attendance File Processor</title>
+
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff00;
+      font-family: "Courier New", Courier, monospace;
+      padding: 20px;
+    }
+
+    h1 {
+      
+      padding-bottom: 10px;
+      text-align: center;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    h2 {
+      border-left: 5px solid #00ff00;
+      padding-left: 10px;
+      animation: blink 1s step-start 0s infinite;
+    }
+
+    input[type="file"] {
+      background: none;
+      color: #00ff00;
+      border: 1px dashed #00ff00;
+      padding: 10px;
+      width: 100%;
+      font-family: inherit;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: black;
+      border: 1px solid #00ff00;
+      color: #00ff00;
+      padding: 10px 20px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #002200;
+    }
+
+    form {
+      max-width: 500px;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .terminal-cursor::after {
+      content: "_";
+      animation: blink 1s step-start 0s infinite;
+    }
+
+    .processing-container {
+      display: none;
+      margin-top: 20px;
+      border: 1px solid #00ff00;
+      padding: 15px;
+    }
+
+    .processing-text {
+      margin-bottom: 10px;
+    }
+
+    .progress-bar {
+      height: 20px;
+      border: 1px solid #00ff00;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+  height: 100%;
+  width: 0%;
+  background-color: #003300;
+  animation: progress 0.3s linear forwards; /* changed from 1s or 2s */
+}
+
+    .terminal-output {
+      margin-top: 10px;
+      font-family: monospace;
+      white-space: pre;
+      overflow: hidden;
+      border: 1px solid #004400;
+      padding: 10px;
+      height: 100px;
+      overflow-y: auto;
+    }
+
+    .complete-message {
+      display: none;
+      margin-top: 15px;
+      color: #00ff00;
+      font-weight: bold;
+      animation: blink 0.8s step-start infinite;
+    }
+
+    @keyframes progress {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Monolithic File Processing System</h1>
+  <h2 class="terminal-cursor">[~] Upload Attendance Excel File (.xlsx)</h2>
+
+  <form id="uploadForm" action="/" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".xlsx" required><br>
+    <button type="submit">Upload & Process</button>
+  </form>
+
+  <div class="processing-container" id="processing">
+    <div class="processing-text">[+] Processing file, please wait...</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="terminal-output">
+Initializing...
+Reading file...
+Updating attendance...
+    </div>
+    <div class="complete-message" id="completeMessage">✔️ Process Complete</div>
+  </div>
+
+  <script>
+  const form = document.getElementById('uploadForm');
+  const processing = document.getElementById('processing');
+  const progressFill = document.getElementById('progressFill');
+  const completeMessage = document.getElementById('completeMessage');
+
+  form.addEventListener('submit', function () {
+    // Show processing container
+    processing.style.display = 'block';
+
+    // Start progress animation (2 seconds total now)
+    progressFill.style.animation = 'progress 2s linear forwards';
+
+    // After 2s, show "Complete" message
+    setTimeout(() => {
+      completeMessage.style.display = 'block';
+
+      // After 2 more seconds, hide processing box and complete message
+      setTimeout(() => {
+        processing.style.display = 'none';
+        completeMessage.style.display = 'none';
+      }, 2000);
+    }, 2000);
+  });
+</script>
+
+<!-- Add this just before </body> -->
+
+  <footer class="footer">
+    <div class="typing-footer">Developed by Thanuja Sathsara | @2025 | Back-end Engineer</div>
+  </footer>
+
+   <style>
+    body {
+      background-color: #000000;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #00ff00;
+      font-size: 24px;
+    }
+
+    input[type="file"] {
+      background-color: #111;
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 8px;
+      font-family: monospace;
+    }
+
+    button {
+      background-color: #111;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      padding: 10px 20px;
+      font-family: monospace;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0f0;
+      color: #000;
+    }
+
+    form {
+      margin-top: 30px;
+    }
+
+    .footer {
+      margin-top: 420px;
+      text-align: center;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 14px;
+      color: #00ff00;
+      opacity: 0.9;
+      border-top: 1px solid #00ff00;
+      padding-top: 10px;
+    }
+
+    .typing-footer {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid #00ff00;
+      animation: typingFooter 4s steps(60, end) forwards, blinkCaret 1s step-end infinite;
+    }
+
+    @keyframes typingFooter {
+      from { width: 0; }
+      to { width: 36%; }
+    }
+
+    @keyframes blinkCaret {
+      50% { border-color: transparent; }
+    }
+  </style>
+
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>📁 Attendance File Processor</title>
+  <title> Attendance File Processor</title>
 
   <style>
     body {
@@ -85,7 +85,7 @@
   height: 100%;
   width: 0%;
   background-color: #003300;
-  animation: progress 0.3s linear forwards; /* changed from 1s or 2s */
+  animation: progress 0.1s linear forwards; /* changed from 1s or 2s */
 }
 
     .terminal-output {
@@ -104,7 +104,7 @@
       margin-top: 15px;
       color: #00ff00;
       font-weight: bold;
-      animation: blink 0.8s step-start infinite;
+      animation: blink 0.1s step-start infinite;
     }
 
     @keyframes progress {
@@ -114,7 +114,9 @@
   </style>
 </head>
 <body>
-  <h1>Monolithic File Processing System</h1>
+
+  <h1>Monolithic File Processing</h1><br>
+
   <h2 class="terminal-cursor">[~] Upload Attendance Excel File (.xlsx)</h2>
 
   <form id="uploadForm" action="/" method="post" enctype="multipart/form-data">
@@ -146,7 +148,7 @@ Updating attendance...
     processing.style.display = 'block';
 
     // Start progress animation (2 seconds total now)
-    progressFill.style.animation = 'progress 2s linear forwards';
+    progressFill.style.animation = 'progress 1s linear forwards';
 
     // After 2s, show "Complete" message
     setTimeout(() => {
@@ -164,8 +166,13 @@ Updating attendance...
 <!-- Add this just before </body> -->
 
   <footer class="footer">
-    <div class="typing-footer">Developed by Thanuja Sathsara | @2025 | Back-end Engineer</div>
+    <div class="typing-footer">
+      Developed by Thanuja Sathsara<br>
+      Copyright © 2025-2026
+    </div>
   </footer>
+  <h6>last update on 05 Aug 2025, at 17:04 (UTC).</h6>
+
 
    <style>
     body {
@@ -208,7 +215,7 @@ Updating attendance...
     }
 
     .footer {
-      margin-top: 420px;
+      margin-top: 320px;
       text-align: center;
       font-family: "Courier New", Courier, monospace;
       font-size: 14px;
@@ -216,23 +223,6 @@ Updating attendance...
       opacity: 0.9;
       border-top: 1px solid #00ff00;
       padding-top: 10px;
-    }
-
-    .typing-footer {
-      display: inline-block;
-      overflow: hidden;
-      white-space: nowrap;
-      border-right: 2px solid #00ff00;
-      animation: typingFooter 4s steps(60, end) forwards, blinkCaret 1s step-end infinite;
-    }
-
-    @keyframes typingFooter {
-      from { width: 0; }
-      to { width: 36%; }
-    }
-
-    @keyframes blinkCaret {
-      50% { border-color: transparent; }
     }
   </style>
 

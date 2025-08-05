@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title> Attendance File Processor</title>
-
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <title>Attendance File Processor</title>
   <style>
     body {
       background-color: #000;
@@ -11,22 +11,18 @@
       font-family: "Courier New", Courier, monospace;
       padding: 20px;
     }
-
     h1 {
-      
       padding-bottom: 10px;
       text-align: center;
       width: fit-content;
       margin-left: auto;
       margin-right: auto;
     }
-
     h2 {
       border-left: 5px solid #00ff00;
       padding-left: 10px;
       animation: blink 1s step-start 0s infinite;
     }
-
     input[type="file"] {
       background: none;
       color: #00ff00;
@@ -36,7 +32,6 @@
       font-family: inherit;
       margin-bottom: 20px;
     }
-
     button {
       background-color: black;
       border: 1px solid #00ff00;
@@ -45,49 +40,42 @@
       font-family: inherit;
       cursor: pointer;
     }
-
     button:hover {
       background-color: #002200;
     }
-
     form {
       max-width: 500px;
     }
-
     @keyframes blink {
-      50% { opacity: 0; }
+      50% {
+        opacity: 0;
+      }
     }
-
     .terminal-cursor::after {
       content: "_";
       animation: blink 1s step-start 0s infinite;
     }
-
     .processing-container {
       display: none;
       margin-top: 20px;
       border: 1px solid #00ff00;
       padding: 15px;
     }
-
     .processing-text {
       margin-bottom: 10px;
     }
-
     .progress-bar {
       height: 20px;
       border: 1px solid #00ff00;
       position: relative;
       overflow: hidden;
     }
-
     .progress-fill {
-  height: 100%;
-  width: 0%;
-  background-color: #003300;
-  animation: progress 0.1s linear forwards; /* changed from 1s or 2s */
-}
-
+      height: 100%;
+      width: 0%;
+      background-color: #003300;
+      animation: progress 0.1s linear forwards;
+    }
     .terminal-output {
       margin-top: 10px;
       font-family: monospace;
@@ -98,7 +86,6 @@
       height: 100px;
       overflow-y: auto;
     }
-
     .complete-message {
       display: none;
       margin-top: 15px;
@@ -106,110 +93,42 @@
       font-weight: bold;
       animation: blink 0.1s step-start infinite;
     }
-
     @keyframes progress {
-      0% { width: 0%; }
-      100% { width: 100%; }
+      0% {
+        width: 0%;
+      }
+      100% {
+        width: 100%;
+      }
     }
-  </style>
-</head>
-<body>
-
-  <h1>Monolithic File Processing</h1><br>
-
-  <h2 class="terminal-cursor">[~] Upload Attendance Excel File (.xlsx)</h2>
-
-  <form id="uploadForm" action="/" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" accept=".xlsx" required><br>
-    <button type="submit">Upload & Process</button>
-  </form>
-
-  <div class="processing-container" id="processing">
-    <div class="processing-text">[+] Processing file, please wait...</div>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-    <div class="terminal-output">
-Initializing...
-Reading file...
-Updating attendance...
-    </div>
-    <div class="complete-message" id="completeMessage">✔️ Process Complete</div>
-  </div>
-
-  <script>
-  const form = document.getElementById('uploadForm');
-  const processing = document.getElementById('processing');
-  const progressFill = document.getElementById('progressFill');
-  const completeMessage = document.getElementById('completeMessage');
-
-  form.addEventListener('submit', function () {
-    // Show processing container
-    processing.style.display = 'block';
-
-    // Start progress animation (2 seconds total now)
-    progressFill.style.animation = 'progress 1s linear forwards';
-
-    // After 2s, show "Complete" message
-    setTimeout(() => {
-      completeMessage.style.display = 'block';
-
-      // After 2 more seconds, hide processing box and complete message
-      setTimeout(() => {
-        processing.style.display = 'none';
-        completeMessage.style.display = 'none';
-      }, 2000);
-    }, 2000);
-  });
-</script>
-
-<!-- Add this just before </body> -->
-
-  <footer class="footer">
-    <div class="typing-footer">
-      Developed by Thanuja Sathsara<br>
-      Copyright © 2025-2026
-    </div>
-  </footer>
-  <h6>last update on 05 Aug 2025, at 17:04 (UTC).</h6>
-
-
-   <style>
-    body {
-      background-color: #000000;
-      color: #00ff00;
-      font-family: 'Courier New', Courier, monospace;
-      padding: 20px;
+    .logout-container {
+      position: absolute;
+      top: 20px;
+      right: 20px;
     }
-
-    h2 {
-      color: #00ff00;
-      font-size: 24px;
-    }
-
-    input[type="file"] {
-      background-color: #111;
-      color: #0f0;
-      border: 1px solid #0f0;
-      padding: 8px;
-      font-family: monospace;
-    }
-
-    button {
-      background-color: #111;
+    .logout-button {
+      background-color: #000;
       color: #00ff00;
       border: 1px solid #00ff00;
-      padding: 10px 20px;
-      font-family: monospace;
+      padding: 8px 16px;
+      font-family: "Courier New", Courier, monospace;
+      text-decoration: none;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-
-    button:hover {
-      background-color: #0f0;
+    .logout-button:hover {
+      background-color: #00ff00;
       color: #000;
     }
-
+    .error-message {
+      color: red;
+      font-family: monospace;
+      margin-top: 10px;
+      border: 1px solid red;
+      padding: 10px;
+      background-color: #1a0000;
+      max-width: 500px;
+    }
     form {
       margin-top: 30px;
     }
@@ -225,7 +144,82 @@ Updating attendance...
       padding-top: 10px;
     }
   </style>
+</head>
+<body>
+  <h1>Monolithic File Processing</h1><br />
 
+  <div class="logout-container">
+    <a href="/logout" class="logout-button">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+  </div>
 
+  <h2 class="terminal-cursor">[~] Upload Attendance Excel File (.xlsx)</h2>
+
+  <form id="uploadForm" action="/" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".xlsx" required /><br />
+    <button type="submit">Upload & Process</button>
+  </form>
+
+  {% if error %}
+  <div class="error-message" id="errorMessage">{{ error }}</div>
+  <script>
+    setTimeout(() => {
+      const errDiv = document.getElementById('errorMessage');
+      if (errDiv) {
+        errDiv.style.transition = 'opacity 1s ease';
+        errDiv.style.opacity = '0';
+        setTimeout(() => { errDiv.style.display = 'none'; }, 1000);
+      }
+    }, 3000);
+  </script>
+  {% endif %}
+
+  <div class="processing-container" id="processing">
+    <div class="processing-text">[+] Processing file, please wait...</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="terminal-output">
+      Initializing...
+      Reading file...
+      Updating attendance...
+    </div>
+    <div class="complete-message" id="completeMessage">✔️ Process Complete</div>
+  </div>
+
+  <script>
+    const form = document.getElementById("uploadForm");
+    const processing = document.getElementById("processing");
+    const progressFill = document.getElementById("progressFill");
+    const completeMessage = document.getElementById("completeMessage");
+
+    form.addEventListener("submit", function () {
+      // Show processing container
+      processing.style.display = "block";
+
+      // Start progress animation (2 seconds total now)
+      progressFill.style.animation = "progress 1s linear forwards";
+
+      // After 2s, show "Complete" message
+      setTimeout(() => {
+        completeMessage.style.display = "block";
+
+        // After 2 more seconds, hide processing box and complete message
+        setTimeout(() => {
+          processing.style.display = "none";
+          completeMessage.style.display = "none";
+        }, 2000);
+      }, 2000);
+    });
+  </script>
+
+  <footer class="footer">
+    <div class="typing-footer">
+      Developed by Thanuja Sathsara<br />
+      Copyright © 2025-2026
+    </div>
+  </footer>
+  <h6>last update on 05 Aug 2025, at 17:04 (UTC).</h6>
 </body>
 </html>

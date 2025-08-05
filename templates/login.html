@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - File Processor</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: "Courier New", Courier, monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    form {
+      border: 1px solid #0f0;
+      padding: 40px;
+      width: 300px;
+      position: relative;
+    }
+
+    input, button {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+      background: none;
+      color: #0f0;
+      border: 1px solid #0f0;
+    }
+
+    button:hover {
+      background-color: #0f0;
+      color: #000;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+
+    .password-container {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #0f0;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <form method="post">
+    <h2>Login</h2>
+    <input type="text" name="username" placeholder="Username" required />
+
+    <div class="password-container">
+      <input type="password" name="password" id="password" placeholder="Password" required />
+      <span class="toggle-password" onclick="togglePassword()">👁️</span>
+    </div>
+
+    <button type="submit">Login</button>
+
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+  </form>
+
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById("password");
+      const icon = document.querySelector(".toggle-password");
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.textContent = "🙈"; // Change icon when visible
+      } else {
+        passwordInput.type = "password";
+        icon.textContent = "👁️"; // Change back when hidden
+      }
+    }
+  </script>
+</body>
+</html>

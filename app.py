@@ -1,15 +1,14 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, session, redirect, url_for, flash, get_flashed_messages
 import pandas as pd
-from datetime import datetime
 import os
 
 app = Flask(__name__)
+app.secret_key = '1234'  # Replace with a real secret key
 UPLOAD_FOLDER = 'uploads'
 PROCESSED_FOLDER = 'processed'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
-# Format time with AM/PM
 def format_time_with_ampm(time_val):
     if pd.isna(time_val) or time_val == '':
         return ''
@@ -20,11 +19,9 @@ def format_time_with_ampm(time_val):
     except:
         return str(time_val)
 
-# Update all sheets in Excel and save as full workbook
 def update_attendance_file(input_file, output_file):
-    excel_data = pd.read_excel(input_file, sheet_name=None, skiprows=1)  # Load all sheets after skipping metadata
+    excel_data = pd.read_excel(input_file, sheet_name=None, skiprows=1)
     writer = pd.ExcelWriter(output_file, engine='openpyxl')
-
     updated_sheet_count = 0
 
     for sheet_name, df in excel_data.items():
@@ -69,7 +66,6 @@ def update_attendance_file(input_file, output_file):
             merged_df['Date'] = merged_df['Date'].dt.strftime('%Y-%m-%d')
             merged_df = merged_df[['Date', 'Day', 'First Check In', 'Last Check Out']]
 
-            # Write updated sheet to output Excel
             merged_df.to_excel(writer, sheet_name=sheet_name, index=False)
             updated_sheet_count += 1
 
@@ -82,9 +78,29 @@ def update_attendance_file(input_file, output_file):
 
     writer.save()
 
-# Web interface
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        if username == 'admin' and password == 'thanuja@0420':  # Replace with real auth
+            session['logged_in'] = True
+            return redirect(url_for('index'))
+        else:
+            flash('Invalid credentials', 'error')
+            return redirect(url_for('login'))
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('login'))
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
     if request.method == 'POST':
         uploaded_file = request.files['file']
         if uploaded_file.filename.endswith('.xlsx'):
@@ -95,10 +111,15 @@ def index():
                 update_attendance_file(input_path, output_path)
                 return send_file(output_path, as_attachment=True)
             except Exception as e:
-                return f"Error processing file: {str(e)}"
+                flash(f"Error processing file: {str(e)}", 'error')
+                return redirect(url_for('index'))
         else:
-            return "Please upload a valid Excel (.xlsx) file."
-    return render_template('index.html')
+            flash("Please upload a valid Excel (.xlsx) file.", 'error')
+            return redirect(url_for('index'))
+
+    error_messages = get_flashed_messages(category_filter=['error'])
+    error = error_messages[0] if error_messages else None
+    return render_template('index.html', error=error)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -68,9 +68,11 @@
 
     <button type="submit">Login</button>
 
-    {% if error %}
-      <div class="error">{{ error }}</div>
-    {% endif %}
+    {% with messages = get_flashed_messages(category_filter=['error']) %}
+      {% if messages %}
+        <div class="error">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
   </form>
 
   <script>
@@ -79,10 +81,10 @@
       const icon = document.querySelector(".toggle-password");
       if (passwordInput.type === "password") {
         passwordInput.type = "text";
-        icon.textContent = "🙈"; // Change icon when visible
+        icon.textContent = "🙈";
       } else {
         passwordInput.type = "password";
-        icon.textContent = "👁️"; // Change back when hidden
+        icon.textContent = "👁️";
       }
     }
   </script>

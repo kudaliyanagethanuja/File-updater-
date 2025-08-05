@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, send_file, session, redirect, url_for, flash, get_flashed_messages
+from flask import Flask, render_template, request, send_file, session, redirect, url_for, flash
 import pandas as pd
 import os
 
 app = Flask(__name__)
-app.secret_key = '1234'  # Replace with a real secret key
+app.secret_key = '1234'  # Use a secure random key in production
+
 UPLOAD_FOLDER = 'uploads'
 PROCESSED_FOLDER = 'processed'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -26,9 +27,7 @@ def update_attendance_file(input_file, output_file):
 
     for sheet_name, df in excel_data.items():
         if df.empty or df.shape[1] < 4:
-            print(f"Skipping sheet '{sheet_name}' due to insufficient data.")
             continue
-
         try:
             df.columns = ['Date', 'Day', 'First Check In', 'Last Check Out']
             df = df.dropna(subset=['Date'])
@@ -68,14 +67,12 @@ def update_attendance_file(input_file, output_file):
 
             merged_df.to_excel(writer, sheet_name=sheet_name, index=False)
             updated_sheet_count += 1
-
         except Exception as e:
             print(f"Error processing sheet '{sheet_name}': {e}")
             continue
 
     if updated_sheet_count == 0:
         raise ValueError("No valid sheets found to update.")
-
     writer.save()
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -83,7 +80,7 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        if username == 'admin' and password == 'thanuja@0420':  # Replace with real auth
+        if username == 'admin' and password == 'thanuja@0420':
             session['logged_in'] = True
             return redirect(url_for('index'))
         else:
@@ -103,7 +100,7 @@ def index():
 
     if request.method == 'POST':
         uploaded_file = request.files['file']
-        if uploaded_file.filename.endswith('.xlsx'):
+        if uploaded_file and uploaded_file.filename.endswith('.xlsx'):
             input_path = os.path.join(UPLOAD_FOLDER, uploaded_file.filename)
             output_path = os.path.join(PROCESSED_FOLDER, 'updated_' + uploaded_file.filename)
             try:
@@ -117,9 +114,7 @@ def index():
             flash("Please upload a valid Excel (.xlsx) file.", 'error')
             return redirect(url_for('index'))
 
-    error_messages = get_flashed_messages(category_filter=['error'])
-    error = error_messages[0] if error_messages else None
-    return render_template('index.html', error=error)
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

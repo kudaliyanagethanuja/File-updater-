@@ -161,19 +161,26 @@
     <button type="submit">Upload & Process</button>
   </form>
 
-  {% if error %}
-  <div class="error-message" id="errorMessage">{{ error }}</div>
-  <script>
-    setTimeout(() => {
-      const errDiv = document.getElementById('errorMessage');
-      if (errDiv) {
-        errDiv.style.transition = 'opacity 1s ease';
-        errDiv.style.opacity = '0';
-        setTimeout(() => { errDiv.style.display = 'none'; }, 1000);
-      }
-    }, 3000);
-  </script>
-  {% endif %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        {% if category == 'error' %}
+          <div class="error-message" id="errorMessage">{{ message }}</div>
+          <script>
+            setTimeout(() => {
+              const errDiv = document.getElementById('errorMessage');
+              if (errDiv) {
+                errDiv.style.transition = 'opacity 1s ease';
+                errDiv.style.opacity = '0';
+                setTimeout(() => { errDiv.style.display = 'none'; }, 1000);
+              }
+            }, 3000);
+          </script>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
 
   <div class="processing-container" id="processing">
     <div class="processing-text">[+] Processing file, please wait...</div>
